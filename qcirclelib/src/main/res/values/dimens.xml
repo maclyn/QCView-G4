@@ -3,5 +3,5 @@
     <dimen name="config_circle_diameter">1046px</dimen>
     <dimen name="config_circle_window_height">1046px</dimen>
     <dimen name="config_circle_window_x_pos">197px</dimen>
-    <dimen name="config_circle_window_y_pos">0px</dimen>
+    <dimen name="config_circle_window_y_pos">35px</dimen>
 </resources>
