@@ -1,5 +1,6 @@
 package de.bigboot.qcircleview;
 
+import android.os.PowerManager;
 import android.content.Context;
 import android.hardware.display.DisplayManager;
 import android.util.Log;
@@ -78,7 +79,8 @@ public class RootTools {
     }
 
     public static boolean screenOff(Context context) {
-        if (ScreenUtils.isScreenOn(context)) {
+        PowerManager mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        if (mPowerManager.isInteractive()) {
             Command command = new Command(0, "input keyevent 26");
             return tryRun(command, true);
         }
