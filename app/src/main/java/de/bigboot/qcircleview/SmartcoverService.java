@@ -167,10 +167,11 @@ public class SmartcoverService extends Service {
         startWatching();
 
         Notification notification=new Notification.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_phone_android_white_48dp)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.service_running))
-                .setPriority(Notification.PRIORITY_MIN).build();
+                .setPriority(Notification.PRIORITY_MIN)
+                .build();
 
         startForeground(1337, notification);
     }

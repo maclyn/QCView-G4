@@ -177,7 +177,13 @@ public class CoverWeatherClockFragment extends Fragment{
             setWeatherIcon(weatherData);
 
             temperature.setText(Math.round(weatherData.getTemperature()) + "°" + preferences.getWeatherUnit());
-            description.setText(getActivity().getResources().getText(weatherData.getWeatherCondition().description));
+
+            //Capitalize so it so looks cleaner
+            String descriptionText = getActivity().getResources().getText(weatherData.getWeatherCondition().description).toString();
+            if(descriptionText.length() > 0){
+                descriptionText = descriptionText.substring(0, 1).toUpperCase(Locale.getDefault()) + descriptionText.substring(1);
+            }
+            description.setText(descriptionText);
             city.setText(weatherData.getCityName() + ", " + weatherData.getCountryCode());
 
         } catch (Exception e) {
