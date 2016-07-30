@@ -69,7 +69,6 @@
                     android:gravity="center"
                     android:layout_height="wrap_content"
                     android:visibility="visible" />
-
             </LinearLayout>
 
         <RelativeLayout
@@ -123,15 +122,22 @@
 
         </RelativeLayout>
 
+        <View
+            android:background="#a0000000"
+            android:layout_below="@+id/control_buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <ImageButton
             android:layout_gravity="center_horizontal"
             android:id="@+id/volume_control"
             android:paddingStart="180px"
             android:paddingEnd="180px"
             android:background="@drawable/ic_music_vol"
-            android:layout_width="140px"
-            android:layout_height="140px"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:scaleType="fitXY"
+            android:layout_marginTop="8dp"
             android:layout_below="@+id/artist"
             android:layout_centerHorizontal="true" />
 
@@ -140,14 +146,15 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layoutDirection="locale"
             android:ellipsize="marquee"
-            android:paddingEnd="105px"
-            android:paddingStart="105px"
             android:marqueeRepeatLimit="marquee_forever"
+            android:paddingEnd="120px"
+            android:paddingStart="120px"
             android:singleLine="true"
             tools:text="Title"
-            android:textSize="70px"
+            android:textSize="22sp"
             android:textColor="@android:color/white"
             android:layout_below="@+id/control_buttons_layout"
             android:layout_alignParentStart="true" />
@@ -158,8 +165,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="locale"
+            android:textSize="20sp"
             android:paddingStart="256px"
-            android:textStyle="bold"
             android:paddingEnd="256px"
             android:ellipsize="marquee"
             android:marqueeRepeatLimit="marquee_forever"
@@ -168,7 +175,5 @@
             android:textColor="@android:color/white"
             android:layout_below="@+id/title"
             android:layout_alignParentStart="true" />
-
     </RelativeLayout>
-
 </FrameLayout>
