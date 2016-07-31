@@ -1,137 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/config_circle_diameter"
-    android:layout_height="@dimen/config_circle_diameter"
-    android:clipChildren="false"
-    android:orientation="vertical"
-    tools:ignore="PxUsage"
-    android:weightSum="1"
-    android:layout_gravity="center_horizontal"
-    android:id="@+id/root">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/root"
+	android:layout_width="@dimen/config_circle_diameter"
+	android:layout_height="@dimen/config_circle_diameter"
+	android:layout_gravity="center_horizontal"
+	android:clipChildren="false"
+	android:orientation="vertical"
+	android:weightSum="1"
+	tools:ignore="PxUsage">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/image_background"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
-        android:layout_alignTop="@+id/panel"
-        android:layout_alignBottom="@+id/panel"
-        android:background="#c8ffffff" />
+	<!-- Transparent white view -->
+	<View
+		android:id="@+id/image_background"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_alignBottom="@+id/panel"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
+		android:layout_alignParentTop="true"
+		android:layout_alignTop="@+id/panel"
+		android:layout_marginLeft="0dp"
+		android:background="#c8ffffff"/>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/image"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="132px"
-        android:layout_alignTop="@+id/panel"
-        android:layout_alignBottom="@+id/panel" />
+	<!-- Image, if the notification has it -->
+	<ImageView
+		android:id="@+id/image"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"/>
 
-    <RelativeLayout
-        android:id="@+id/panel"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="0dp"
-        android:layout_alignParentTop="true">
+	<!-- Cover to "dim" the image -->
+	<View
+		android:id="@+id/image_shade"
+		android:background="#80ffffff"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
 
-        <de.bigboot.qcircleview.cover.AlphaTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/title"
-            android:textColor="#843b3b3b"
-            android:gravity="center_horizontal"
-            android:layout_below="@+id/icon"
-            android:layout_centerHorizontal="true" />
+	<RelativeLayout
+		android:id="@+id/panel"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true" >
 
-        <ScrollView
-            android:id="@+id/scrollview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="132px"
-            android:layout_marginLeft="132px"
-            android:layout_below="@+id/title"
-            android:layout_above="@+id/linearLayout">
+		<!-- App icon at top -->
+		<ImageView
+			android:id="@+id/icon"
+			android:layout_width="156px"
+			android:layout_height="156px"
+			android:layout_alignParentTop="true"
+			android:layout_centerHorizontal="true"
+			android:layout_marginTop="16dp"/>
 
-            <de.bigboot.qcircleview.cover.AlphaTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:id="@+id/text"
-                android:textColor="#84000000"
-                android:gravity="center_horizontal" />
-        </ScrollView>
-        <ImageView
-            android:layout_width="156px"
-            android:layout_height="156px"
-            android:id="@+id/icon"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/activity_vertical_margin" />
+		<ScrollView
+			android:layout_below="@+id/icon"
+			android:layout_above="@+id/linearLayout"
+			android:layout_marginBottom="8dp"
+			android:layout_width="840px"
+			android:layout_height="match_parent"
+			android:layout_centerHorizontal="true">
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:id="@+id/linearLayout">
+			<LinearLayout
+				android:orientation="vertical"
+				android:layout_gravity="center_vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+				<!-- Notification title -->
+				<de.bigboot.qcircleview.cover.AlphaTextView
+					android:id="@+id/title"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:maxLines="2"
+					android:ellipsize="end"
+					android:layout_marginBottom="8dp"
+					android:gravity="center_horizontal"
+					android:textSize="20sp"
+					android:textColor="#606060"
+					android:text="Sample"
+					/>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="200px"
-                    android:id="@+id/action2"
-                    android:visibility="gone"
-                    android:layout_weight="1"
-                    style="@style/cover_button" />
+				<!-- Notification text -->
+				<de.bigboot.qcircleview.cover.AlphaTextView
+					android:id="@+id/text"
+					android:gravity="center_horizontal"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textSize="18sp"
+					android:maxLines="4"
+					android:ellipsize="end"
+					android:textColor="#101010"
+					android:text="Sample 2"/>
+			</LinearLayout>
+		</ScrollView>
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="200px"
-                    android:visibility="gone"
-                    android:id="@+id/action3"
-                    android:layout_weight="1"
-                    style="@style/cover_button" />
-            </LinearLayout>
+		<!-- The action buttons for a notification. They cover other parts of the notification, and look like:
+			[ a2 ][ a3 ]  [   a2    ]
+			[   a1    ] , [   a1    ], or [     a1      ]
+		-->
+		<LinearLayout
+			android:id="@+id/linearLayout"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentStart="true"
+			android:orientation="vertical">
 
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="200px"
-                android:visibility="gone"
-                android:id="@+id/action1"
-                android:layout_weight="1"
-                style="@style/cover_button" />
+			<LinearLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:orientation="horizontal">
 
-        </LinearLayout>
+				<Button
+					android:id="@+id/action2"
+					style="@style/cover_button"
+					android:layout_width="wrap_content"
+					android:layout_height="200px"
+					android:layout_weight="1"
+					android:visibility="gone"/>
 
-        <ImageView
-            android:layout_width="224px"
-            android:layout_height="224px"
-            android:id="@+id/delete_notification"
-            android:background="@drawable/remove_notification_bg"
-            android:src="@drawable/ic_action_delete_notification"
-            android:visibility="gone"
-            tools:visibility="visible"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/activity_vertical_margin" />
-    </RelativeLayout>
+				<Button
+					android:id="@+id/action3"
+					style="@style/cover_button"
+					android:layout_width="wrap_content"
+					android:layout_height="200px"
+					android:layout_weight="1"
+					android:visibility="gone"/>
+			</LinearLayout>
 
+			<Button
+				android:id="@+id/action1"
+				style="@style/cover_button"
+				android:layout_width="fill_parent"
+				android:layout_height="200px"
+				android:layout_weight="1"
+				android:visibility="gone"/>
+		</LinearLayout>
+
+		<!-- Trash can image that you drag the notification to to cancel it -->
+		<ImageView
+			android:id="@+id/delete_notification"
+			android:layout_width="224px"
+			android:layout_height="224px"
+			android:layout_alignParentBottom="true"
+			android:layout_centerHorizontal="true"
+			android:layout_marginBottom="@dimen/activity_vertical_margin"
+			android:background="@drawable/remove_notification_bg"
+			android:src="@drawable/ic_action_delete_notification"
+			android:visibility="gone"
+			tools:visibility="gone"/>
+	</RelativeLayout>
 </RelativeLayout>

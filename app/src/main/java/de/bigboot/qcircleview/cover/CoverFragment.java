@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.media.session.MediaController;
 import android.media.session.MediaSessionManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -48,6 +49,7 @@ import static de.bigboot.qcircleview.NotificationService.Notification;
 
 @EFragment(R.layout.fragment_cover)
 public class CoverFragment extends Fragment {
+    private static final String TAG = "CoverFragment";
 
     @ViewById(R.id.viewpager)
     protected ViewPager mViewPager;
@@ -106,6 +108,7 @@ public class CoverFragment extends Fragment {
                     menuSlide.setPanelHeight(getResources().getDimensionPixelSize(R.dimen.menu_panel_height));
                 } else {
                     currentNotification = adapter.getNotification(position);
+                    Log.d(TAG, "Setting notification as " + currentNotification);
                     menuSlide.setPanelHeight(0);
                 }
             }
@@ -154,7 +157,7 @@ public class CoverFragment extends Fragment {
     }
 
     @Receiver(actions = NotificationService.ACTION_NOTIFICATION_ADDED)
-    protected void onNotificationAdded(@Receiver.Extra(NotificationService.EXTRA_NOTIFCATION)Notification notification) {
+    protected void onNotificationAdded(@Receiver.Extra(NotificationService.EXTRA_NOTIFCATION) Notification notification) {
         boolean onEmptyPage = mViewPager.getCurrentItem() == adapter.getDefaultFragmentPosition();
         adapter.onNotificationAdded(notification);
         if(onEmptyPage) {
@@ -169,7 +172,14 @@ public class CoverFragment extends Fragment {
     }
 
     public void onCoverOpened() {
-        if(currentNotification != null && menuSlide.getPanelState() == SlidingUpPanelLayout.PanelState.HIDDEN) {
+        Log.d(TAG, "onCoverOpened");
+
+        Log.d(TAG, "Current notification is " + (currentNotification == null ? "not there" : currentNotification.getTitle()));
+        Log.d(TAG, "Current panel state is " + menuSlide.getPanelState().name());
+
+        //TODO: Figure out why the menuSlide stuff was used
+
+        if(currentNotification != null) {
             try {
                 currentNotification.getContentIntent().send();
             } catch (PendingIntent.CanceledException e) {

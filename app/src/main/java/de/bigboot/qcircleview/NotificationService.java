@@ -132,6 +132,7 @@ public class NotificationService extends NotificationListenerService {
         private String template;
         private PendingIntent contentIntent;
         private boolean isClearable;
+        private int priority;
         private List<Action> actions;
 
         @Nullable
@@ -148,6 +149,8 @@ public class NotificationService extends NotificationListenerService {
                 if (notification.extras.getCharSequence(EXTRA_TITLE) != null) {
                     builder.setTitle(notification.extras.getCharSequence(android.app.Notification.EXTRA_TITLE).toString());
                 }
+
+                builder.setPriority(statusBarNotification.getNotification().priority);
 
                 if (notification.extras.getCharSequence(android.app.Notification.EXTRA_TEXT) != null) {
                     builder.setText(
@@ -184,6 +187,7 @@ public class NotificationService extends NotificationListenerService {
                      String template,
                      PendingIntent contentIntent,
                      boolean isClearable,
+                     int priority,
                      List<Action> actions) {
             this.key = key;
             this.text = text;
@@ -192,7 +196,12 @@ public class NotificationService extends NotificationListenerService {
             this.template = template;
             this.contentIntent = contentIntent;
             this.isClearable = isClearable;
+            this.priority = priority;
             this.actions = actions;
+        }
+
+        public int getPriority() {
+            return priority;
         }
 
         public String getKey() { return key; }
@@ -231,6 +240,7 @@ public class NotificationService extends NotificationListenerService {
             template = in.readString();
             contentIntent = in.readParcelable(PendingIntent.class.getClassLoader());
             isClearable = in.readInt() == 1;
+            priority = in.readInt();
             int actionsCount = in.readInt();
             actions = new ArrayList<>(actionsCount);
             for(int i = 0; i < actionsCount; i++) {
@@ -251,10 +261,16 @@ public class NotificationService extends NotificationListenerService {
             dest.writeString(packageName);
             dest.writeString(template);
             dest.writeParcelable(contentIntent, flags);
-            dest.writeInt(isClearable?1:0);
+            dest.writeInt(isClearable ? 1 : 0);
+            dest.writeInt(priority);
             dest.writeInt(actions.size());
             for(Action action : actions)
                 dest.writeParcelable(action, flags);
+        }
+
+        @Override
+        public String toString() {
+            return getTitle() + "/" + getText();
         }
 
         public static class Builder {
@@ -263,12 +279,18 @@ public class NotificationService extends NotificationListenerService {
             private String title = "";
             private String packageName;
             private String template;
+            private int priority;
             private PendingIntent contentIntent = null;
             private boolean isClearable;
             private List<Action> actions = new ArrayList<>();
 
             public Builder setKey(String key) {
                 this.key = key;
+                return this;
+            }
+
+            public Builder setPriority(int priority){
+                this.priority = priority;
                 return this;
             }
 
@@ -308,7 +330,7 @@ public class NotificationService extends NotificationListenerService {
             }
 
             public Notification createNotification() {
-                return new Notification(key, text, title, packageName, template, contentIntent, isClearable, actions);
+                return new Notification(key, text, title, packageName, template, contentIntent, isClearable, priority, actions);
             }
         }
 

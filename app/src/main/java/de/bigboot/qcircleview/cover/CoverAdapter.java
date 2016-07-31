@@ -1,7 +1,6 @@
 package de.bigboot.qcircleview.cover;
 
-import android.app.Activity;
-import android.app.Fragment;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.media.session.MediaController;
@@ -46,7 +45,7 @@ public class CoverAdapter extends FragmentStatePagerAdapter {
             return fragment;
         } else {
             int index = position - (getDefaultFragmentPosition() + 1);
-            Notification notification = notifications.get(index);
+            NotificationService.Notification notification = notifications.get(index);
             CoverNotificationFragment fragment = CoverNotificationFragment_.builder()
                     .notification(notification).build();
             fragments.put(position, fragment);
@@ -86,10 +85,22 @@ public class CoverAdapter extends FragmentStatePagerAdapter {
         context.sendBroadcast(new Intent(NotificationService.ACTION_COMMAND).putExtra(NotificationService.EXTRA_COMMAND, NotificationService.COMMAND_LIST));
     }
 
-    public void onNotificationAdded(Notification notification) {
-        if ("android.app.Notification$MediaStyle".equals(notification.getTemplate())) {
-            // SKIP Media notifications, we'll handle them using MediaSession
-        } else {
+    private boolean validateNotification(NotificationService.Notification notification){
+        //(1) Ensure it's not a media player
+        String packageName = notification.getPackageName();
+        for(MediaController mc : this.mediaControllers){
+            if(mc.getPackageName().equals(packageName)) return false;
+        }
+
+        //(2) Ensure it's no a min-priority notification
+        if(notification.getPriority() == android.app.Notification.PRIORITY_MIN)
+            return false;
+
+        return true;
+    }
+
+    public void onNotificationAdded(NotificationService.Notification notification) {
+        if (validateNotification(notification)) {
             for (int i = 0; i < notifications.size(); i++) {
                 if (notifications.get(i).getKey().equals(notification.getKey())) {
                     notifications.set(i, notification);
@@ -102,7 +113,7 @@ public class CoverAdapter extends FragmentStatePagerAdapter {
         notifyDataSetChanged();
     }
 
-    public void onNotificationRemoved(Notification notification, int index) {
+    public void onNotificationRemoved(NotificationService.Notification notification, int index) {
         for(int i = 0; i < notifications.size(); i++) {
             if(notifications.get(i).getKey().equals(notification.getKey())) {
                 if (i != index) {
@@ -117,13 +128,13 @@ public class CoverAdapter extends FragmentStatePagerAdapter {
         notifyDataSetChanged();
     }
 
-    public void onNotificationListReceived(ArrayList<Notification> notifications) {
+    public void onNotificationListReceived(ArrayList<NotificationService.Notification> notifications) {
         this.notifications.clear();
         this.notifications.addAll(notifications);
         notifyDataSetChanged();
     }
 
-    public Notification getNotification(int index) {
+    public NotificationService.Notification getNotification(int index) {
         index -= (getDefaultFragmentPosition()+1);
         if (index < 0 || notifications.size() <= index) {
             return null;

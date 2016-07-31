@@ -58,9 +58,6 @@ public class CoverNotificationFragment extends Fragment {
     @ViewById(R.id.text)
     protected AlphaTextView textView;
 
-    @ViewById(R.id.scrollview)
-    protected ScrollView textScrollView;
-
     @ViewById(R.id.icon)
     protected ImageView iconView;
 
@@ -72,6 +69,9 @@ public class CoverNotificationFragment extends Fragment {
 
     @ViewById(R.id.panel)
     protected RelativeLayout panelView;
+
+    @ViewById(R.id.image_shade)
+    protected View imageShade;
 
     @ViewById(R.id.delete_notification)
     protected ImageView deleteNotificationView;
@@ -97,6 +97,8 @@ public class CoverNotificationFragment extends Fragment {
             }
         });
         rootView.setClipToOutline(true);
+
+        //Set the image included with the notification
         if(NotificationCache.INSTANCE.getNotificationImage(notification) != null) {
             Drawable image = new BitmapDrawable(getResources(),
                     NotificationCache.INSTANCE.getNotificationImage(notification));
@@ -104,14 +106,15 @@ public class CoverNotificationFragment extends Fragment {
             hasImage = true;
         }
 
+        imageShade.setVisibility(hasImage ? View.VISIBLE : View.GONE);
+
         PackageManager pm = getActivity().getPackageManager();
         String pckg = notification.getPackageName();
         Drawable icon = null;
         try {
             icon = pm.getApplicationIcon(pckg);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        } catch (PackageManager.NameNotFoundException ignored) {}
+
         iconView.setImageDrawable(icon);
         iconView.setOnDragListener(new View.OnDragListener() {
             @Override
@@ -258,10 +261,10 @@ public class CoverNotificationFragment extends Fragment {
             default:
                 return;
         }
+
         try {
             action.getIntent().send();
-        } catch (PendingIntent.CanceledException e) {
-            e.printStackTrace();
+        } catch (PendingIntent.CanceledException ignored) {
         }
     }
 }
